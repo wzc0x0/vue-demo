@@ -25,6 +25,12 @@
     <table class="auth_status" style="float: left;margin-top: 30px">
       <thead><tr><th style="text-align: left;font-size: 20px">平台授权设置</th></tr></thead>
       <tbody>
+        <tr class="setBar">
+          <td><el-button type="primary" size="small">去设置</el-button></td>
+          <td><el-button type="primary" size="small">去设置</el-button></td>
+          <td><el-button type="primary" size="small">去设置</el-button></td>
+          <td><el-button type="primary" size="small">去设置</el-button></td>
+        </tr>
         <tr>
           <td><img src="../../assets/image/icon_chong.png" alt=""></td>
           <td><img src="../../assets/image/icon_ti.png" alt=""></td>
@@ -48,8 +54,10 @@
   </div>
 </template>
 <script>
+  import ElButton from "../../../node_modules/element-ui/packages/button/src/button";
   export default{
-      data(){
+    components: {ElButton},
+    data(){
           return{
             pickerOptions1: {
               shortcuts: [{
@@ -80,12 +88,12 @@
 </script>
 <style scoped>
   tbody{
-    margin-top: 20px;
+    margin-top: 16px;
     display: block;
   }
   .bill_wrap{
     width:inherit;
-    height: 190px;
+    height: 200px;
     border-bottom: 2px #c0ccda dashed;
   }
   .bill_download{
@@ -98,5 +106,9 @@
   .auth_status tbody td{
     line-height: 24px;
     padding-left: 60px;
+  }
+  .setBar button{
+    display: none;
+    margin: 0 5px 5px 0;
   }
 </style>

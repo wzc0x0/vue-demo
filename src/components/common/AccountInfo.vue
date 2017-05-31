@@ -1,5 +1,16 @@
 <template>
   <div class="account_info">
+    <div style="padding-bottom: 40px">
+      <span style="font-size: 18px;color: #cccccc">请选择合作商户：</span>
+      <el-select v-model="value1" placeholder="请选择">
+        <el-option
+          v-for="item in options"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value">
+        </el-option>
+      </el-select>
+    </div>
     <table class="account_info_wrap">
       <thead>
         <tr><th style="text-align: left;font-size: 20px">收入账户基本资料</th></tr>
@@ -38,14 +49,37 @@
         </tr>
         <tr>
           <td><el-button type="primary">充值</el-button></td>
-          <td><el-button type="primary">体现</el-button></td>
+          <td><el-button type="primary">提现</el-button></td>
+          <td><el-button type="primary">资金划拨</el-button></td>
         </tr>
       </tbody>
     </table>
   </div>
 </template>
 <script>
-
+  export default {
+    data() {
+      return {
+        options: [{
+          value: '选项1',
+          label: '黄金糕'
+        }, {
+          value: '选项2',
+          label: '双皮奶'
+        }, {
+          value: '选项3',
+          label: '蚵仔煎'
+        }, {
+          value: '选项4',
+          label: '龙须面'
+        }, {
+          value: '选项5',
+          label: '北京烤鸭'
+        }],
+        value1:'蚵仔煎'
+      }
+    }
+  }
 </script>
 <style scoped>
   .account_info_wrap{
