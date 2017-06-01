@@ -7,12 +7,12 @@
       <div>
         <ul class="userInfo" v-show="isAccount">
           <li class="header_title" style="font-size: 18px;margin-right: 10px">平台存管账户管理平台</li>
-          <li class="userName">admin&nbsp;您好！<span>|</span></li>
+          <li class="userName">{{userName}}&nbsp;您好！<span>|</span></li>
           <li class="modifyPwd">修改密码<span>|</span></li>
           <li class="exit">退出</li>
         </ul>
         <ul class="userInfo" v-show="!isAccount">
-          <li class="user_login" style="margin-right: 100px" @click="isAccount = !isAccount">登陆</li>
+          <li class="user_login" style="margin-right: 100px" @click="">登陆</li>
         </ul>
       </div>
     </div>
@@ -22,9 +22,13 @@
   export default{
       data(){
           return{
-              isAccount:false
+              isAccount:false,
+              userName:''
           };
       },
+      mounted(){
+          //TODO
+      }
 
   }
 </script>

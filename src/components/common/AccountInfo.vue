@@ -1,6 +1,6 @@
 <template>
   <div class="account_info">
-    <div style="padding-bottom: 40px">
+    <div style="padding-bottom: 40px" v-show="false">
       <span style="font-size: 18px;color: #cccccc">请选择合作商户：</span>
       <el-select v-model="value1" placeholder="请选择">
         <el-option
