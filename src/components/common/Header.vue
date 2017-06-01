@@ -24,7 +24,8 @@
           return{
               isAccount:false
           };
-      }
+      },
+
   }
 </script>
 <style scoped>

@@ -11,10 +11,11 @@
               <el-input v-model="ruleForm.username" placeholder="请输入用户账户"></el-input>
             </el-form-item>
             <el-form-item prop="password">
-              <el-input type="password" placeholder="登陆密码" v-model="ruleForm.password" @keyup.enter.native="submitForm('ruleForm')"></el-input>
+              <el-input type="password" placeholder="登陆密码" v-model="ruleForm.password"></el-input>
             </el-form-item>
-            <el-form-item prop="validate">
-              <el-input v-model="ruleForm.validateCode"></el-input>
+            <el-form-item prop="validateCode">
+              <el-input v-model="ruleForm.validateCode" style="width: 70%" @keyup.enter.native="submitForm('ruleForm')"></el-input>
+              <el-button type="info">QICNJG</el-button>
             </el-form-item>
             <div class="login-btn">
               <el-button type="primary" @click="submitForm('ruleForm')">登&emsp;录</el-button>
@@ -29,8 +30,11 @@
 
 <script>
   import vHeader from '../components/common/Header.vue';
+  import ElButton from "../../node_modules/element-ui/packages/button/src/button";
   export default {
-    components:{vHeader} ,
+    components:{
+      ElButton,
+      vHeader} ,
     data: function(){
       return {
         ruleForm: {
@@ -45,7 +49,7 @@
           password: [
             { required: true, message: '请输入密码', trigger: 'blur' }
           ],
-          validate: [
+          validateCode: [
             { required: true, message: '请输入验证码', trigger: 'blur' }
           ]
         }
@@ -53,11 +57,10 @@
     },
     methods: {
       submitForm(formName) {
-        const self = this;
-        self.$refs[formName].validate((valid) => {
+        this.$refs[formName].validate((valid) => {
           if (valid) {
-            localStorage.setItem('ms_username',self.ruleForm.username);
-            self.$router.push('/readme');
+            sessionStorage.setItem('ms_username',this.ruleForm.username);
+            this.$router.push('/index');
           } else {
             console.log('error submit!!');
             return false;
