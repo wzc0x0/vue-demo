@@ -1,5 +1,3 @@
-<!--平台总账户-->
-
 <template>
   <div>
     <v-info></v-info>
@@ -13,9 +11,9 @@
   import vBill from '../common/BillDownload.vue'
   export default {
     components:{
-        vInfo,
-        vRecord,
-        vBill
+      vInfo,
+      vRecord,
+      vBill
     }
   }
 </script>
