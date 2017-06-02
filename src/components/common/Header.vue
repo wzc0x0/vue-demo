@@ -7,12 +7,12 @@
       <div>
         <ul class="userInfo" v-show="isAccount">
           <li class="header_title" style="font-size: 18px;margin-right: 10px">平台存管账户管理平台</li>
-          <li class="userName">{{userName}}&nbsp;您好！<span>|</span></li>
+          <li class="userName">{{username}}&nbsp;您好！<span>|</span></li>
           <li class="modifyPwd">修改密码<span>|</span></li>
-          <li class="exit">退出</li>
+          <li class="exit" @click="handleExit()">退出</li>
         </ul>
         <ul class="userInfo" v-show="!isAccount">
-          <li class="user_login" style="margin-right: 100px" @click="">登陆</li>
+          <li class="user_login" style="margin-right: 100px">欢迎登陆</li>
         </ul>
       </div>
     </div>
@@ -22,12 +22,26 @@
   export default{
       data(){
           return{
-              isAccount:false,
-              userName:''
+              isAccount:false
           };
       },
-      mounted(){
-          //TODO
+      computed:{
+        username(){
+            let username = sessionStorage.getItem('ms_username');
+            //return username ? username : this.name;
+            if(username){
+                this.isAccount = !this.isAccount;
+                return username;
+            }else {
+                this.handleExit();
+            }
+        }
+      },
+      methods:{
+        handleExit(){
+            sessionStorage.removeItem('ms_username');
+            this.$router.push('/login');
+        }
       }
 
   }

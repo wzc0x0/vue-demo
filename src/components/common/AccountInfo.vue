@@ -78,6 +78,9 @@
         }],
         value1:'蚵仔煎'
       }
+    },
+    created(){
+        console.log(this.$route.path)
     }
   }
 </script>
