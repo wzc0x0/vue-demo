@@ -1,6 +1,6 @@
 <template>
   <div class="account_info">
-    <div style="padding-bottom: 40px" v-show="false">
+    <div style="padding-bottom: 40px" :show="isPartner">
       <span style="font-size: 18px;color: #cccccc">请选择合作商户：</span>
       <el-select v-model="value1" placeholder="请选择">
         <el-option
@@ -13,7 +13,7 @@
     </div>
     <table class="account_info_wrap">
       <thead>
-        <tr><th style="text-align: left;font-size: 20px">收入账户基本资料</th></tr>
+        <tr><th style="text-align: left;font-size: 20px">{{InfoTitle}}账户基本资料</th></tr>
       </thead>
       <tbody class="userInfo" style="float: left;margin-top: 30px">
         <tr>
@@ -23,8 +23,8 @@
           <td>4156454545454</td>
         </tr>
         <tr>
-          <td>账户名称：</td>
-          <td colspan="3">9999999</td>
+          <td>账户说明：</td>
+          <td colspan="3">{{explain}}</td>
         </tr>
         <tr>
           <td>绑定对公账户：</td>
@@ -37,11 +37,11 @@
           <td>999,999,999</td>
         </tr>
         <tr>
-          <td>账户总额：</td>
+          <td>可用余额：</td>
           <td>999,999,999</td>
         </tr>
         <tr>
-          <td>账户总额：</td>
+          <td>冻结金额：</td>
           <td>999,999,999</td>
         </tr>
         <tr>
@@ -49,8 +49,8 @@
         </tr>
         <tr>
           <td><el-button type="primary">充值</el-button></td>
-          <td><el-button type="primary">提现</el-button></td>
-          <td><el-button type="primary">资金划拨</el-button></td>
+          <td><el-button type="primary" v-show="isDrawMoney">提现</el-button></td>
+          <td><el-button type="primary" v-show="isTransfer">资金划拨</el-button></td>
         </tr>
       </tbody>
     </table>
@@ -76,7 +76,12 @@
           value: '选项5',
           label: '北京烤鸭'
         }],
-        value1:'蚵仔煎'
+        value1:'蚵仔煎',
+        isPartner:false,
+        isDrawMoney:true,
+        isTransfer:true,
+        explain:"2222",
+        title1:"3333"
       }
     },
     created(){
