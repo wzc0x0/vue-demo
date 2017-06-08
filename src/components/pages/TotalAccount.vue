@@ -2,8 +2,16 @@
 
 <template>
   <div>
-    <v-info></v-info>
-    <v-record></v-record>
+    <v-info accountTitle="总账户基本资料"
+            accountNumber="SYS_GENERATE_000"
+            accountName="平台总账户"
+            accountExplain="用于平台资金划拨，可以将该账户资金派拨给其他平台账户"
+            :isPartner="Partner"
+            :isDrawMoney="DrawMoney"
+            :isTransfer="Transfer"
+    ></v-info>
+    <v-record recordTitle="平台总账户资金记录"
+    ></v-record>
   </div>
 </template>
 <script>
@@ -12,24 +20,9 @@
   export default {
     data(){
       return{
-        options: [{
-          value: '选项1',
-          label: 'hahhah'
-        }, {
-          value: '选项2',
-          label: '111112'
-        }, {
-          value: '选项3',
-          label: '2232'
-        }, {
-          value: '选项4',
-          label: '333'
-        }, {
-          value: '选项5',
-          label: '444'
-        }],
-        isPartner:true,
-        explain:"hello vux"
+        Partner:false,
+        DrawMoney:true,
+        Transfer:true
       }
     },
     components:{

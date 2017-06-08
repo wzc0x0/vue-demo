@@ -2,7 +2,7 @@
   <div class="account_record">
     <table class="account_record_wrap">
       <thead>
-        <tr><th style="text-align: left;font-size: 20px;">代偿金账户资金记录</th></tr>
+        <tr><th style="text-align: left;font-size: 20px;">{{recordTitle}}</th></tr>
       </thead>
       <tbody class="userRecord">
         <tr>
@@ -135,6 +135,9 @@
 </template>
 <script>
   export default {
+    props:{
+      recordTitle:String,
+    },
     data() {
       return {
         options: [{
