@@ -2,45 +2,27 @@
 
 <template>
   <div>
-   <!-- <v-info accountTitle="总账户基本资料"
-            accountNumber="SYS_GENERATE_000"
-            accountName="平台总账户"
-            accountExplain="用于平台资金划拨，可以将该账户资金派拨给其他平台账户"
-            :isPartner="Partner"
-            :isDrawMoney="DrawMoney"
-            :isTransfer="Transfer"
-    ></v-info>-->
-    <v-header></v-header>
+    <recharge-dialog ref="rechargeChild"></recharge-dialog>
     <div class="account_info">
-      <div style="padding-bottom: 40px" v-show="isPartner">
-        <span style="font-size: 18px;color: #cccccc">请选择合作商户：</span>
-        <el-select v-model="value" placeholder="请选择">
-          <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
-        </el-select>
-      </div>
       <table class="account_info_wrap">
         <thead>
-        <tr><th style="text-align: left;font-size: 20px">{{accountTitle}}</th></tr>
+        <tr><th style="text-align: left;font-size: 20px">总账户基本资料</th></tr>
         </thead>
         <tbody class="userInfo" style="float: left;margin-top: 30px">
         <tr>
           <td>账户名称：</td>
-          <td>{{accountName}}</td>
+          <td>平台总账户</td>
           <td>账户编号：</td>
-          <td>{{accountNumber}}</td>
+          <td>SYS_GENERATE_000</td>
         </tr>
         <tr>
           <td>账户说明：</td>
-          <td colspan="3" >{{accountExplain}}</td>
+          <td colspan="3" >用于平台资金划拨，可以将该账户资金派拨给其他平台账户</td>
         </tr>
         <tr>
           <td>绑定对公账户：</td>
-          <td>尚未绑定银行对公账户<span style="margin-left: 20px">绑定</span></td>
+          <td v-show="isBindingCard">尚未绑定银行对公账户<span class="binding">绑定</span></td>
+          <td v-show="!isBindingCard">您已绑定银行对公账户：尾号{{tailNum}}<span class="binding">解绑</span></td>
         </tr>
         </tbody>
         <tbody class="userMoney" style="float: right;margin: 30px 30px 0 0 ">
@@ -60,7 +42,7 @@
           <td></td>
         </tr>
         <tr>
-          <td><el-button type="primary" @click="Rechange">充值</el-button></td>
+          <td><el-button type="primary" @click="recharge">充值</el-button></td>
           <td><el-button type="primary" v-show="isDrawMoney">提现</el-button></td>
           <td><el-button type="primary" v-show="isTransfer">资金划拨</el-button></td>
         </tr>
@@ -70,7 +52,7 @@
     <div class="account_record">
       <table class="account_record_wrap">
         <thead>
-        <tr><th style="text-align: left;font-size: 20px;">{{recordTitle}}</th></tr>
+        <tr><th style="text-align: left;font-size: 20px;">平台总账户资金记录</th></tr>
         </thead>
         <tbody class="userRecord">
         <tr>
@@ -202,17 +184,122 @@
   </div>
 </template>
 <script>
-  import vHeader from '../common/Header.vue';
+  import formatNum from "../../config/formatNum";
+  import RechargeDialog from '../common/RechargeDialog.vue';
   export default {
+    components:{
+      RechargeDialog
+    },
     data(){
       return{
-        Partner:false,
-        DrawMoney:true,
-        Transfer:true
+        isDrawMoney:true,
+        isTransfer:true,
+        isBindingCard:true,
+        options: [{
+          value: '选项1',
+          label: '黄金糕'
+        }, {
+          value: '选项2',
+          label: '双皮奶'
+        }, {
+          value: '选项3',
+          label: '蚵仔煎'
+        }, {
+          value: '选项4',
+          label: '龙须面'
+        }, {
+          value: '选项5',
+          label: '北京烤鸭'
+        }],
+        pickerOptions1: {
+          shortcuts: [{
+            text: '今天',
+            onClick(picker) {
+              picker.$emit('pick', new Date());
+            }
+          }, {
+            text: '昨天',
+            onClick(picker) {
+              const date = new Date();
+              date.setTime(date.getTime() - 3600 * 1000 * 24);
+              picker.$emit('pick', date);
+            }
+          }, {
+            text: '一周前',
+            onClick(picker) {
+              const date = new Date();
+              date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit('pick', date);
+            }
+          }]
+        },
+        tableData: [{
+          date: '2016-05-02',
+          name: '王小虎',
+          address: '上海'
+        }, {
+          date: '2016-05-04',
+          name: '王小虎',
+          address: '上海'
+        }, {
+          date: '2016-05-01',
+          name: '王小虎',
+          address: '上海'
+        }, {
+          date: '2016-05-03',
+          name: '王小虎',
+          address: '上海'
+        }],
+        value0:"",
+        value1: '北京烤鸭',
+        value2: '北京烤鸭',
+        value3: '',
+        value4: '',
+        platformNumber:'',
+        currentPage:1,
+        balance:"",
+        availableAmount:"",
+        freezeAmount:"",
+        tailNum:''
       }
     },
-    components:{
-        vHeader
+    methods:{
+      handleSizeChange(val) {
+        console.log(`每页 ${val} 条`);
+      },
+      handleCurrentChange(val) {
+        console.log(`当前页: ${val}`);
+      },
+      recharge(){
+          this.$refs.rechargeChild.dialogFormVisible = true;
+      }
+    },
+    mounted(){
+      this.$http.post("/api/order/selectDownOrder",{
+        "platformUserNo":"SYS_GENERATE_000",
+        "orderType":"4001",
+        "orderSource":"1",
+        "orgCode":"xwbank"
+      }).then((res)=>{
+        let data = JSON.parse(res.bodyText);
+        console.log(data);
+        if(data.model.respData.bankcardNo){
+          this.isBindingCard = !this.isBindingCard;
+          let tail = data.model.respData.bankcardNo.toString();
+          this.tailNum = tail.substr(tail.length-4);
+        }
+        this.balance = formatNum(data.model.respData.balance);
+        this.availableAmount = formatNum(data.model.respData.availableAmount);
+        this.freezeAmount = formatNum(data.model.respData.freezeAmount);
+      },(res)=>{
+          console.log(res);
+          this.$notify({
+            title: '错误',
+            message: '网络状态异常，请重试！',
+            type: 'warning',
+            duration:0
+          })
+      });
     }
   }
 </script>
@@ -244,5 +331,11 @@
     margin-top: 10px;
     height: 24px;
     line-height: 24px;
+  }
+  .binding{
+    margin-left: 20px;
+    text-decoration: underline;
+    cursor: pointer;
+    color: #20a0ff;
   }
 </style>
