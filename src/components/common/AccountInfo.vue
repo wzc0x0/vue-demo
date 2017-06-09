@@ -48,7 +48,7 @@
           <td></td>
         </tr>
         <tr>
-          <td><el-button type="primary">充值</el-button></td>
+          <td><el-button type="primary" @click="Rechange">充值</el-button></td>
           <td><el-button type="primary" v-show="isDrawMoney">提现</el-button></td>
           <td><el-button type="primary" v-show="isTransfer">资金划拨</el-button></td>
         </tr>
@@ -127,8 +127,13 @@
         freezeAmount:''
       }
     },
+    methods:{
+      Rechange(){
+          console.log("hello my name is info")
+      }
+    },
     created(){
-        let currentPath = this.$route.path.replace("/","");
+        /*let currentPath = this.$route.path.replace("/","");
         switch (currentPath){
           case "index":
         }
@@ -144,7 +149,7 @@
             this.availableAmount = data.model.respData.availableAmount;
             this.freezeAmount = data.model.respData.freezeAmount;
 
-        });
+        });*/
 
     }
   }
