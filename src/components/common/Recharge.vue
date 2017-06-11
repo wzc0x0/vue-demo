@@ -1,6 +1,5 @@
 <template>
   <div>
-    <el-dialog title="收货地址" :visible.sync="dialogFormVisible">
       <el-radio-group v-model="radio" @change="whichBank">
         <el-row :gutter="20">
           <el-col :span="6"><div class="grid-content"><el-radio :label="'BKHK'">备选项</el-radio></div></el-col>
@@ -9,8 +8,8 @@
           <el-col :span="6"><div class="grid-content"><el-radio :label="'GDBK'">备选项</el-radio></div></el-col>
         </el-row>
         <el-row :gutter="20">
-          <el-col :span="6"><div class="grid-content"><el-radio :label="'BKHK'">备选项</el-radio></div></el-col>
-          <el-col :span="6"><div class="grid-content"><el-radio :label="'CIBK'">备选项</el-radio></div></el-col>
+          <el-col :span="6"><div class="grid-content"><el-radio :label="'ABOC'">备选项</el-radio></div></el-col>
+          <el-col :span="6"><div class="grid-content"><el-radio :label="'BKCH'">备选项</el-radio></div></el-col>
           <el-col :span="6"><div class="grid-content"><el-radio :label="'EVER'">备选项</el-radio></div></el-col>
           <el-col :span="6"><div class="grid-content"><el-radio :label="'GDBK'">备选项</el-radio></div></el-col>
         </el-row>
@@ -27,7 +26,6 @@
           <div style="text-align: center"><el-button type="primary" @click="dialogFormVisible = false">充  值</el-button></div>
         </div>
       </div>
-    </el-dialog>
   </div>
 </template>
 <script>
@@ -39,20 +37,7 @@
       ElInput},
     data(){
           return{
-            dialogFormVisible: false,
-            form: {
-              name: '',
-              region: '',
-              date1: '',
-              date2: '',
-              delivery: false,
-              type: [],
-              resource: '',
-              desc: '',
-
-            },
-            radio:3,
-            formLabelWidth: '120px'
+            radio:'BKHK'
         }
       },
       methods:{

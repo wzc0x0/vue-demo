@@ -24,10 +24,10 @@
     margin: auto;
     padding: 40px;
   }
-  /*.move-enter-active,.move-leave-active{
-    transition: opacity .5s;
+  .move-enter-active,.move-leave-active{
+    transition: opacity .8s;
   }
   .move-enter,.move-leave{
     opacity: 0;
-  }*/
+  }
 </style>
