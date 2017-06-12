@@ -2,6 +2,7 @@
 
 <template>
   <div>
+    <transfer-dialog ref="transfer"></transfer-dialog>
     <recharge-dialog ref="rechargeChild" v-if="whichModule === 'recharge' "></recharge-dialog>
     <withdraw-money v-else-if="whichModule === 'drawMoney'"></withdraw-money>
     <template v-else>
@@ -46,7 +47,7 @@
           <tr>
             <td><el-button type="primary" @click="recharge">充值</el-button></td>
             <td><el-button type="primary" v-show="isDrawMoney" @click="drawMoney">提现</el-button></td>
-            <td><el-button type="primary" v-show="isTransfer">资金划拨</el-button></td>
+            <td><el-button type="primary" v-show="isTransfer" @click="transfor">资金划拨</el-button></td>
           </tr>
           </tbody>
         </table>
@@ -190,10 +191,12 @@
   import formatNum from "../../config/formatNum";
   import RechargeDialog from '../common/Recharge.vue';
   import WithdrawMoney from '../common/WithdrawMoney.vue';
+  import TransferDialog from '../common/TransferDialog.vue';
   export default {
     components:{
       RechargeDialog,
-      WithdrawMoney
+      WithdrawMoney,
+      TransferDialog
     },
     data(){
       return{
@@ -277,10 +280,13 @@
         console.log(`当前页: ${val}`);
       },
       recharge(){
-         this.whichModule =  "recharge";
+          this.whichModule =  "recharge";
       },
       drawMoney(){
           this.whichModule = "drawMoney";
+      },
+      transfor(){
+          this.$refs.transfer.dialogVisible = !this.$refs.transfer.dialogVisible
       }
     },
     mounted(){
