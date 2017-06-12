@@ -9,14 +9,14 @@
       <div class="account_info">
         <table class="account_info_wrap">
           <thead>
-          <tr><th style="text-align: left;font-size: 20px">总账户基本资料</th></tr>
+          <tr><th style="text-align: left;font-size: 20px">平台代充值账户基本资料</th></tr>
           </thead>
           <tbody class="userInfo" style="float: left;margin-top: 30px">
           <tr>
             <td>账户名称：</td>
             <td>平台总账户</td>
             <td>账户编号：</td>
-            <td>SYS_GENERATE_006</td>
+            <td>SYS_GENERATE_007</td>
           </tr>
           <tr>
             <td>账户说明：</td>
@@ -55,7 +55,7 @@
       <div class="account_record">
         <table class="account_record_wrap">
           <thead>
-          <tr><th style="text-align: left;font-size: 20px;">平台总账户资金记录</th></tr>
+          <tr><th style="text-align: left;font-size: 20px;">平台代充值账户资金记录</th></tr>
           </thead>
           <tbody class="userRecord">
           <tr>

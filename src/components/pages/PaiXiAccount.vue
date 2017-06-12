@@ -9,18 +9,18 @@
       <div class="account_info">
         <table class="account_info_wrap">
           <thead>
-          <tr><th style="text-align: left;font-size: 20px">总账户基本资料</th></tr>
+          <tr><th style="text-align: left;font-size: 20px">平台派息账户基本资料</th></tr>
           </thead>
           <tbody class="userInfo" style="float: left;margin-top: 30px">
           <tr>
             <td>账户名称：</td>
             <td>平台总账户</td>
             <td>账户编号：</td>
-            <td>SYS_GENERATE_005</td>
+            <td>SYS_GENERATE_006</td>
           </tr>
           <tr>
             <td>账户说明：</td>
-            <td colspan="3" >用于平台资金划拨，可以将该账户资金派拨给其他平台账户</td>
+            <td colspan="3" >用于平台为用户发放投资人补偿利息或借款人换款时将利息还到该账户</td>
           </tr>
           <tr>
             <td>绑定对公账户：</td>
@@ -55,7 +55,7 @@
       <div class="account_record">
         <table class="account_record_wrap">
           <thead>
-          <tr><th style="text-align: left;font-size: 20px;">平台总账户资金记录</th></tr>
+          <tr><th style="text-align: left;font-size: 20px;">平台派息账户资金记录</th></tr>
           </thead>
           <tbody class="userRecord">
           <tr>

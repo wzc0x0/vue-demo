@@ -55,7 +55,7 @@
       <div class="account_record">
         <table class="account_record_wrap">
           <thead>
-          <tr><th style="text-align: left;font-size: 20px;">平台总账户资金记录</th></tr>
+          <tr><th style="text-align: left;font-size: 20px;">平台分润账户资金记录</th></tr>
           </thead>
           <tbody class="userRecord">
           <tr>
