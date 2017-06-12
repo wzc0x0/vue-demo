@@ -266,8 +266,8 @@
         availableAmount:"",
         freezeAmount:"",
         tailNum:'',
-        isDrawMoney:true,
-        isTransfer:true,
+        isDrawMoney:false,
+        isTransfer:false,
         isBindingCard:true,
         whichModule:"",
       }

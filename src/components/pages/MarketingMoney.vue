@@ -267,7 +267,7 @@
         freezeAmount:"",
         tailNum:'',
         isDrawMoney:true,
-        isTransfer:true,
+        isTransfer:false,
         isBindingCard:true,
         whichModule:"",
       }
