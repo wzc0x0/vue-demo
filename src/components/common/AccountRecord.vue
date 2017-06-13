@@ -1,20 +1,21 @@
 <template>
   <div class="account_record">
-    <table class="account_record_wrap">
-      <thead>
+    <el-form :module="recordForm" ref="recordForm">
+      <table class="account_record_wrap">
+        <thead>
         <tr><th style="text-align: left;font-size: 20px;">{{recordTitle}}</th></tr>
-      </thead>
-      <tbody class="userRecord">
+        </thead>
+        <tbody class="userRecord">
         <tr>
-          <td>平台请求流水号</td>
+          <td>平台交易流水号</td>
           <td>
-            <el-input v-model="platformNumber"></el-input>
+            <el-input v-model="recordForm.platformNumber"></el-input>
           </td>
           <td>账户类型</td>
           <td>
-            <el-select v-model="value1" placeholder="请选择">
+            <el-select v-model="recordForm.value_account" placeholder="请选择">
               <el-option
-                v-for="item in options"
+                v-for="item in account_options"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value">
@@ -23,9 +24,9 @@
           </td>
           <td>交易类型</td>
           <td>
-            <el-select v-model="value2" placeholder="请选择">
+            <el-select v-model="recordForm.value_type" placeholder="请选择">
               <el-option
-                v-for="item in options"
+                v-for="item in transaction_options"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value">
@@ -34,11 +35,11 @@
           </td>
         </tr>
         <tr>
-          <td>交易时间：</td>
+          <td>交易时间</td>
           <td>
             <div class="block">
               <el-date-picker
-                v-model="value3"
+                v-model="recordForm.startTime"
                 type="datetime"
                 placeholder="选择起始日期时间"
                 align="right"
@@ -50,7 +51,7 @@
           <td>
             <div class="block">
               <el-date-picker
-                v-model="value4"
+                v-model="recordForm.endTime"
                 type="datetime"
                 placeholder="选择结束日期时间"
                 align="right"
@@ -59,11 +60,12 @@
             </div>
           </td>
           <td>
-            <el-button type="text" style="color: white">查询</el-button>
+            <el-button type="text" style="color: white" @click="query">查询</el-button>
           </td>
         </tr>
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </el-form>
     <div style="margin-top: 15px">
       <el-table
         :data="tableData"
@@ -124,38 +126,51 @@
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
           :current-page.sync="currentPage"
-          :page-size="4"
+          :page-size="20"
           layout="total, prev, pager, next"
           :total="100">
         </el-pagination>
       </div>
     </div>
   </div>
-
 </template>
 <script>
   export default {
-    props:{
-      recordTitle:String,
-    },
+    props:["recordTitle"],
     data() {
       return {
-        options: [{
-          value: '选项1',
-          label: '黄金糕'
-        }, {
-          value: '选项2',
-          label: '双皮奶'
-        }, {
-          value: '选项3',
-          label: '蚵仔煎'
-        }, {
-          value: '选项4',
-          label: '龙须面'
-        }, {
-          value: '选项5',
-          label: '北京烤鸭'
-        }],
+        account_options: "",
+        value_account: '平台总账户',
+        value_transaction: '不限',
+        tableData: [],
+        currentPage:1,
+        recordForm:{
+          platformNumber:"",
+          value_account:"",
+          value_type:"",
+          startTime:"",
+          endTime:""
+        },
+        transaction_options:[{
+            value: '选项1',
+            label: '资金划拨'
+          }, {
+            value: '选项2',
+            label: '充值'
+          },
+          {
+            value: '选项3',
+            label: '提现扣除'
+          },
+          {
+            value: '选项4',
+            label: '提现回退'
+          },
+          {
+            value: '选项5',
+            label: '不限'
+          }
+        ],
         pickerOptions1: {
           shortcuts: [{
             text: '今天',
@@ -177,30 +192,7 @@
               picker.$emit('pick', date);
             }
           }]
-        },
-        tableData: [{
-          date: '2016-05-02',
-          name: '王小虎',
-          address: '上海'
-        }, {
-          date: '2016-05-04',
-          name: '王小虎',
-          address: '上海'
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海'
-        }, {
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海'
-        }],
-        value1: '北京烤鸭',
-        value2: '北京烤鸭',
-        value3: '',
-        value4: '',
-        platformNumber:'',
-        currentPage:1,
+        }
       }
     },
     methods:{
@@ -209,6 +201,9 @@
       },
       handleCurrentChange(val) {
         console.log(`当前页: ${val}`);
+      },
+      query(){
+        this.$emit("query",this.recordForm) //传递给父组件
       }
     }
   }
