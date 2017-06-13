@@ -3,13 +3,14 @@
 <template>
   <div>
     <transfer-dialog ref="transfer"></transfer-dialog>
+    <bind-card-dialog ref="bingCard"></bind-card-dialog>
     <recharge-dialog ref="rechargeChild" v-if="whichModule === 'recharge' "></recharge-dialog>
     <withdraw-money v-else-if="whichModule === 'drawMoney'"></withdraw-money>
     <template v-else>
       <div class="account_info">
         <table class="account_info_wrap">
           <thead>
-          <tr><th style="text-align: left;font-size: 20px">总账户基本资料</th></tr>
+          <tr><th style="text-align: left;font-size: 20px">平台分润账户基本资料</th></tr>
           </thead>
           <tbody class="userInfo" style="float: left;margin-top: 30px">
           <tr>
@@ -53,6 +54,7 @@
         </table>
       </div>
       <div class="account_record">
+        <el-form :model="form"></el-form>
         <table class="account_record_wrap">
           <thead>
           <tr><th style="text-align: left;font-size: 20px;">平台分润账户资金记录</th></tr>
@@ -192,11 +194,13 @@
   import RechargeDialog from '../common/Recharge.vue';
   import WithdrawMoney from '../common/WithdrawMoney.vue';
   import TransferDialog from '../common/TransferDialog.vue';
+  import BindCardDialog from '../common/BindCardDialog.vue';
   export default {
     components:{
       RechargeDialog,
       WithdrawMoney,
-      TransferDialog
+      TransferDialog,
+      BindCardDialog
     },
     data(){
       return{
@@ -286,25 +290,12 @@
           this.whichModule = "drawMoney";
       },
       transfor(){
-          this.$refs.transfer.dialogVisible = !this.$refs.transfer.dialogVisible
+          this.$refs.transfer.dialogVisible = !this.$refs.transfer.dialogVisible;
+
       },
       bindBankCard(){
-          this.$prompt("请输入绑定银行卡号","提示",{
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            inputPattern:/^\d+$/,
-            inputErrorMessage:'输入卡号不正确'
-          }).then(({ value }) => {
-            this.$message({
-              type: 'success',
-              message: '您输入的卡号是: ' + value
-            });
-          }).catch(() => {
-            this.$message({
-              type: 'info',
-              message: '取消输入'
-            });
-          });
+          this.$refs.bingCard.dialogFormVisible = !this.$refs.bingCard.dialogFormVisible;
+          this.$refs.bingCard.form.whichClick = "SYS_GENERATE_003";
       }
     },
     mounted(){

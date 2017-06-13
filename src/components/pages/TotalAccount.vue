@@ -25,7 +25,7 @@
           <tr>
             <td>绑定对公账户：</td>
             <td v-show="isBindingCard">尚未绑定银行对公账户<span class="binding">绑定</span></td>
-            <td v-show="!isBindingCard">您已绑定银行对公账户：尾号{{tailNum}}<span class="binding">解绑</span></td>
+            <td v-show="!isBindingCard">您已绑定银行对公账户：尾号{{tailNum}}<span class="binding" @click="unbind('SYS_GENERATE_000')">解绑</span></td>
           </tr>
           </tbody>
           <tbody class="userMoney" style="float: right;margin: 30px 30px 0 0 ">
@@ -53,21 +53,22 @@
         </table>
       </div>
       <div class="account_record">
+        <el-form :module="recordForm" ref="recordForm">
         <table class="account_record_wrap">
           <thead>
           <tr><th style="text-align: left;font-size: 20px;">平台总账户资金记录</th></tr>
           </thead>
           <tbody class="userRecord">
           <tr>
-            <td>平台请求流水号</td>
+            <td>平台交易流水号</td>
             <td>
-              <el-input v-model="platformNumber"></el-input>
+              <el-input v-model="recordForm.platformNumber"></el-input>
             </td>
             <td>账户类型</td>
             <td>
-              <el-select v-model="value1" placeholder="请选择">
+              <el-select v-model="recordForm.value_account" placeholder="请选择">
                 <el-option
-                  v-for="item in options"
+                  v-for="item in account_options"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value">
@@ -76,9 +77,9 @@
             </td>
             <td>交易类型</td>
             <td>
-              <el-select v-model="value2" placeholder="请选择">
+              <el-select v-model="recordForm.value_type" placeholder="请选择">
                 <el-option
-                  v-for="item in options"
+                  v-for="item in transaction_options"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value">
@@ -87,11 +88,11 @@
             </td>
           </tr>
           <tr>
-            <td>交易时间：</td>
+            <td>交易时间</td>
             <td>
               <div class="block">
                 <el-date-picker
-                  v-model="value3"
+                  v-model="recordForm.startTime"
                   type="datetime"
                   placeholder="选择起始日期时间"
                   align="right"
@@ -103,7 +104,7 @@
             <td>
               <div class="block">
                 <el-date-picker
-                  v-model="value4"
+                  v-model="recordForm.endTime"
                   type="datetime"
                   placeholder="选择结束日期时间"
                   align="right"
@@ -112,11 +113,12 @@
               </div>
             </td>
             <td>
-              <el-button type="text" style="color: white">查询</el-button>
+              <el-button type="text" style="color: white" @click="query">查询</el-button>
             </td>
           </tr>
           </tbody>
         </table>
+        </el-form>
         <div style="margin-top: 15px">
           <el-table
             :data="tableData"
@@ -189,33 +191,48 @@
 </template>
 <script>
   import formatNum from "../../config/formatNum";
+  import addSign from "../../config/addSign";
   import RechargeDialog from '../common/Recharge.vue';
   import WithdrawMoney from '../common/WithdrawMoney.vue';
   import TransferDialog from '../common/TransferDialog.vue';
+  import ElForm from "../../../node_modules/element-ui/packages/form/src/form";
   export default {
     components:{
+      ElForm,
       RechargeDialog,
       WithdrawMoney,
       TransferDialog
     },
     data(){
       return{
-        options: [{
-          value: '选项1',
-          label: '黄金糕'
-        }, {
-          value: '选项2',
-          label: '双皮奶'
-        }, {
-          value: '选项3',
-          label: '蚵仔煎'
-        }, {
-          value: '选项4',
-          label: '龙须面'
-        }, {
-          value: '选项5',
-          label: '北京烤鸭'
-        }],
+        account_options: "",
+        recordForm:{
+          platformNumber:"",
+          value_account:"",
+          value_type:"",
+          startTime:"",
+          endTime:""
+        },
+        transaction_options:[{
+            value: '选项1',
+            label: '资金划拨'
+          }, {
+            value: '选项2',
+            label: '充值'
+          },
+          {
+            value: '选项3',
+            label: '提现扣除'
+          },
+          {
+            value: '选项4',
+            label: '提现回退'
+          },
+          {
+            value: '选项5',
+            label: '不限'
+          }
+        ],
         pickerOptions1: {
           shortcuts: [{
             text: '今天',
@@ -238,26 +255,10 @@
             }
           }]
         },
-        tableData: [{
-          date: '2016-05-02',
-          name: '王小虎',
-          address: '上海'
-        }, {
-          date: '2016-05-04',
-          name: '王小虎',
-          address: '上海'
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海'
-        }, {
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海'
-        }],
+        tableData: "",
         value0:"",
-        value1: '北京烤鸭',
-        value2: '北京烤鸭',
+        value_account: '平台总账户',
+        value_transaction: '不限',
         value3: '',
         value4: '',
         platformNumber:'',
@@ -287,15 +288,31 @@
       },
       transfor(){
           this.$refs.transfer.dialogVisible = !this.$refs.transfer.dialogVisible
+      },
+      unbind(platformUserNo){
+          this.$http.post("/api/order/accountDownOrder",addSign({
+            "platformUserNo":platformUserNo,
+            "orderType":"1005",
+            "orderSource":"1",
+            "orgCode":"xwbank",
+            "redirectUrl":"http://www.baidu.com"
+          })).then((res)=>{
+              if(res.body.code == "200"){
+                  window.location.href = res.body.model.respData;
+              }
+          })
+      },
+      query(){
+        console.log(this.recordForm)
       }
     },
     mounted(){
-      this.$http.post("/api/order/selectDownOrder",{
+      this.$http.post("/api/order/selectDownOrder",addSign({
         "platformUserNo":"SYS_GENERATE_000",
         "orderType":"4001",
         "orderSource":"1",
         "orgCode":"xwbank"
-      }).then((res)=>{
+      })).then((res)=>{
         let data = JSON.parse(res.bodyText);
         console.log(data);
         if(data.model.respData.bankcardNo){
