@@ -3,6 +3,7 @@
 <template>
   <div>
     <transfer-dialog ref="transfer"></transfer-dialog>
+    <bind-card-dialog ref="bingCard"></bind-card-dialog>
     <recharge-dialog ref="rechargeChild" v-if="whichModule === 'recharge' "></recharge-dialog>
     <withdraw-money v-else-if="whichModule === 'drawMoney'"></withdraw-money>
     <template v-else>
@@ -24,7 +25,7 @@
           </tr>
           <tr>
             <td>绑定对公账户：</td>
-            <td v-show="isBindingCard">尚未绑定银行对公账户<span class="binding">绑定</span></td>
+            <td v-show="isBindingCard">尚未绑定银行对公账户<span class="binding" @click="bindBankCard">绑定</span></td>
             <td v-show="!isBindingCard">您已绑定银行对公账户：尾号{{tailNum}}<span class="binding" @click="unbind('SYS_GENERATE_000')">解绑</span></td>
           </tr>
           </tbody>
@@ -52,7 +53,11 @@
           </tbody>
         </table>
       </div>
-      <account-record recordTitle="平台总账户资金记录" @query="queryRecord"></account-record>
+      <account-record
+        recordTitle="平台总账户资金记录"
+        :tableData="tableData"
+        @query="queryRecord"
+      ></account-record>
     </template>
   </div>
 </template>
@@ -63,13 +68,13 @@
   import WithdrawMoney from '../common/WithdrawMoney.vue';
   import TransferDialog from '../common/TransferDialog.vue';
   import AccountRecord from '../common/AccountRecord.vue';
-  import ElForm from "../../../node_modules/element-ui/packages/form/src/form";
+  import BindCardDialog from '../common/BindCardDialog.vue';
   export default {
     components:{
-      ElForm,
       RechargeDialog,
-      WithdrawMoney,
       TransferDialog,
+      BindCardDialog,
+      WithdrawMoney,
       AccountRecord
     },
     data(){
@@ -82,6 +87,7 @@
         isTransfer:true,
         isBindingCard:true,
         whichModule:"",
+        tableData:[]
       }
     },
     methods:{
@@ -93,6 +99,10 @@
       },
       transfor(){
           this.$refs.transfer.dialogVisible = !this.$refs.transfer.dialogVisible
+      },
+      bindBankCard(){
+        this.$refs.bingCard.dialogFormVisible = !this.$refs.bingCard.dialogFormVisible;
+        this.$refs.bingCard.form.whichClick = "SYS_GENERATE_000";
       },
       unbind(platformUserNo){
           this.$http.post("/api/order/accountDownOrder",addSign({
@@ -108,7 +118,18 @@
           })
       },
       queryRecord(formRecord){
-          console.log(formRecord);
+          let nid = formRecord.platformNumber;
+          let startDateStr = formRecord.startTime;
+          let endDateStr = formRecord.endTime;
+          this.$http.post("/api/order/queryAccountRecord",addSign({
+            "pageNum":"1",
+            "pageSize":"20"
+          })).then((res)=>{
+              if(res.body.code == "200"){
+                  this.tableData = res.body.model.model;
+              }
+              console.log(res.body)
+          })
       }
     },
     mounted(){

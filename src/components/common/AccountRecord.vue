@@ -79,10 +79,10 @@
         <el-table-column
           prop="date"
           label="交易时间"
-          width="180">
+          width="120">
         </el-table-column>
         <el-table-column
-          prop="name"
+          prop="nid"
           label="交易流水号"
           width="180">
         </el-table-column>
@@ -92,27 +92,27 @@
           width="100">
         </el-table-column>
         <el-table-column
-          prop="address"
+          prop="operateUse"
           label="类别"
           width="100">
         </el-table-column>
         <el-table-column
-          prop="address"
+          prop="operationAmount"
           label="交易金额"
           width="100">
         </el-table-column>
         <el-table-column
-          prop="address"
+          prop="availableCredit"
           label="可用余额"
           width="100">
         </el-table-column>
         <el-table-column
-          prop="address"
+          prop="targetPlatformUserNo"
           label="到账账户"
-          width="100">
+          width="120">
         </el-table-column>
         <el-table-column
-          prop="address"
+          prop="remark"
           label="备注">
         </el-table-column>
       </el-table>
@@ -136,13 +136,12 @@
 </template>
 <script>
   export default {
-    props:["recordTitle"],
+    props:["recordTitle","tableData"],
     data() {
       return {
         account_options: "",
         value_account: '平台总账户',
         value_transaction: '不限',
-        tableData: [],
         currentPage:1,
         recordForm:{
           platformNumber:"",

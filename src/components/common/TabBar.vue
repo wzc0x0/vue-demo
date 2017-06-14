@@ -1,14 +1,6 @@
 <template>
   <div class="tab_bar">
     <el-menu  style="background-color: #ffffff" :default-active="onRoutes"  mode="horizontal" unique-opened router>
-      <!--<el-menu-item index="1">平台总账户</el-menu-item>
-      <el-menu-item index="2">代偿金账户</el-menu-item>
-      <el-menu-item index="3">分润账户</el-menu-item>
-      <el-menu-item index="4">收入账户</el-menu-item>
-      <el-menu-item index="5">营销款账户</el-menu-item>
-      <el-menu-item index="6">派息账户</el-menu-item>
-      <el-menu-item index="7">代充值账户</el-menu-item>
-      <el-menu-item index="8">合作账户</el-menu-item>-->
       <template v-for="item in items">
         <el-menu-item :index="item.index">{{item.title}}</el-menu-item>
       </template>

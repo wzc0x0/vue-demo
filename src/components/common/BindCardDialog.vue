@@ -20,6 +20,7 @@
 </template>
 <script>
   import ElInput from "../../../node_modules/element-ui/packages/input/src/input";
+  import addSign from "../../config/addSign"
   export default{
     components: {ElInput},
     data(){
@@ -47,7 +48,7 @@
         gotoBindCard(form){
           this.$refs[form].validate((valid)=>{
               if(valid){
-                  this.$http.post("/api/order/accountDownOrder",{
+                  this.$http.post("/api/order/accountDownOrder",addSign({
                     "platformUserNo":this.form.whichClick,
                     "orderType":"1004",
                     "orderSource":"1",
@@ -55,7 +56,8 @@
                     "redirectUrl":"http://www.baidu.com",
                     "bankcardNo":this.form.bankcardNo,
                     "bankcode":this.form.bankcode
-                  }).then((res) =>{
+                  })).then((res) =>{
+                      console.log(res);
                       if(res.body.code == "200") {
                         window.location.href = res.body.model.respData
                       }
