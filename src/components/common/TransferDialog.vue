@@ -1,6 +1,6 @@
 <!--资金划拨-->
 <template>
-  <div @click="dialogVisible">
+  <div @click="dialogVisible = !dialogVisible">
     <el-dialog
       title="资金划拨操作"
       :visible.sync="dialogVisible"

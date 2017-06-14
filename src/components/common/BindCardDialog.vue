@@ -1,6 +1,6 @@
 <!--绑卡弹窗-->
 <template>
-  <div @click="dialogFormVisible">
+  <div @click="dialogFormVisible = !dialogFormVisible">
     <el-dialog title="绑定银行卡号" :visible.sync="dialogFormVisible">
       <el-form :model="form" :rules="rules" ref="bindCardForm">
         <input type="hidden" v-model="form.whichClick">
