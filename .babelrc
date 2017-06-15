@@ -1,7 +1,6 @@
 {
   "presets": [
-    ["env", { "modules": false }],
-    "stage-2"
+    ["env","stage-2"] //去掉{modules:false} 使用commonjs写法 babel没有编译
   ],
   "plugins": ["transform-runtime"],
   "comments": false,
